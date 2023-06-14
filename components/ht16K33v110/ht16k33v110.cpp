@@ -140,6 +140,9 @@ const uint8_t HT16K33V110_ASCII_TO_RAW[] PROGMEM = {
 
 void HT16K33V110Display::setup() {
   ESP_LOGCONFIG(TAG, "Setting up HT16K33V110...");
+  uint8_t data;
+  this->read_byte_(HT16K33V110_OSC_ON, &data);
+  this->read_byte_(HT16K33V110_DISP_ON, &data);
   this->display();
 }
 
