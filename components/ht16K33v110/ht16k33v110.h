@@ -4,33 +4,24 @@
 #include "esphome/core/defines.h"
 #include "esphome/core/hal.h"
 #include "esphome/core/time.h"
+#include "esphome/components/i2c.h"
 
 #include <vector>
 
-#ifdef USE_BINARY_SENSOR
-#include "esphome/components/binary_sensor/binary_sensor.h"
-#endif
-
 namespace esphome {
-namespace tm1637 {
+namespace ht16K33v110 {
 
-class TM1637Display;
-#ifdef USE_BINARY_SENSOR
-class TM1637Key;
-#endif
+class HT16K33V110Display;
 
-using tm1637_writer_t = std::function<void(TM1637Display &)>;
+using ht16k33v110_writer_t = std::function<void(HT16K33V110Display &)>;
 
-class TM1637Display : public PollingComponent {
+class HT16K33V110Display : public PollingComponent {
  public:
-  void set_writer(tm1637_writer_t &&writer) { this->writer_ = writer; }
+  void set_writer(ht16k33v110_writer_t &&writer) { this->writer_ = writer; }
 
   void setup() override;
 
   void dump_config() override;
-
-  void set_clk_pin(GPIOPin *pin) { clk_pin_ = pin; }
-  void set_dio_pin(GPIOPin *pin) { dio_pin_ = pin; }
 
   float get_setup_priority() const override;
 
@@ -52,12 +43,6 @@ class TM1637Display : public PollingComponent {
 
   void display();
 
-#ifdef USE_BINARY_SENSOR
-  void loop() override;
-  uint8_t get_keys();
-  void add_tm1637_key(TM1637Key *tm1637_key) { this->tm1637_keys_.push_back(tm1637_key); }
-#endif
-
   /// Evaluate the strftime-format and print the result at the given position.
   uint8_t strftime(uint8_t pos, const char *format, ESPTime time) __attribute__((format(strftime, 3, 0)));
   /// Evaluate the strftime-format and print the result at position 0.
@@ -71,30 +56,12 @@ class TM1637Display : public PollingComponent {
   void start_();
   void stop_();
 
-  GPIOPin *dio_pin_;
-  GPIOPin *clk_pin_;
   uint8_t intensity_;
   uint8_t length_;
   bool inverted_;
-  optional<tm1637_writer_t> writer_{};
+  optional<ht16k33v110_writer_t> writer_{};
   uint8_t buffer_[6] = {0};
-#ifdef USE_BINARY_SENSOR
-  std::vector<TM1637Key *> tm1637_keys_{};
-#endif
 };
-
-#ifdef USE_BINARY_SENSOR
-class TM1637Key : public binary_sensor::BinarySensor {
-  friend class TM1637Display;
-
- public:
-  void set_keycode(uint8_t key_code) { key_code_ = key_code; }
-  void process(uint8_t data) { this->publish_state(static_cast<bool>(data == this->key_code_)); }
-
- protected:
-  uint8_t key_code_{0};
-};
-#endif
 
 }  // namespace tm1637
 }  // namespace esphome
