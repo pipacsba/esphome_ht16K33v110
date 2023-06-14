@@ -7,17 +7,25 @@ namespace esphome {
 namespace ht16k33v110 {
 
 static const char *const TAG = "display.ht16k33v110";
-const uint8_t Hour1_address = 0x00;
+const uint8_t HT16K33V110_CHR0_ADDRESS = 0x00;
 // display internal address of second character
-const uint8_t Hour2_address = 0x02;
+const uint8_t HT16K33V110_CHR1_ADDRESS = 0x02;
 // display internal address of third character
-const uint8_t Min1_address = 0x06;
+const uint8_t HT16K33V110_CHR2_ADDRESS = 0x06;
 // display internal address of fourth character
-const uint8_t Min2_address = 0x08;
+const uint8_t HT16K33V110_CHR3_ADDRESS = 0x08;
 // display internal address of colon character
-const uint8_t Colon_address = 0x04;
+const uint8_t HT16K33V110_COLON_ADDRESS = 0x04;
 // define constant for maximum dimming value
-const uint8_t MaxDimming = 15;
+const uint8_t HT16K33V110_MAX_DIMMING = 15;
+// define constant for display on/off adress
+const uint8_t HT16K33V110_DISP_ON = 0x81;
+const uint8_t HT16K33V110_DISP_OFF = 0x80;
+// define constant for display oscillator on/off adress
+const uint8_t HT16K33V110_OSC_ON = 0x21;
+const uint8_t HT16K33V110_OSC_OFF = 0x20;
+
+
     
 const uint8_t HT16K33V110_UNKNOWN_CHAR = 0b1111111;
     
@@ -134,6 +142,7 @@ void HT16K33V110Display::setup() {
   ESP_LOGCONFIG(TAG, "Setting up HT16K33V110...");
   this->display();
 }
+
 void HT16K33V110Display::dump_config() {
   ESP_LOGCONFIG(TAG, "TM1637:");
   ESP_LOGCONFIG(TAG, "  Intensity: %d", this->intensity_);
