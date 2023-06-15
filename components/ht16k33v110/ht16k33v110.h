@@ -56,8 +56,8 @@ class HT16K33V110Display : public PollingComponent {
  protected:
   void bit_delay_();
   void setup_pins_();
-  bool send_byte_(uint8_t b);
-  uint8_t read_byte_();
+  bool send_byte_(uint8_t a_register, uint8_t value);
+  uint8_t read_byte_(uint8_t a_register, uint8_t *value);
   void start_();
   void stop_();
 
