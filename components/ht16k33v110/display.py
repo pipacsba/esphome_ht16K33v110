@@ -20,7 +20,7 @@ CONFIG_SCHEMA = (
             cv.Optional(CONF_INTENSITY, default=7): cv.All(
                 cv.uint8_t, cv.Range(min=1, max=16)
             ),
-            cv.Optional(CONF_INVERTED, default=False): cv.boolean, # future improvement
+            cv.Optional(CONF_INVERTED, default=False): cv.boolean,
         }
     ).extend(cv.polling_component_schema("1s"))
     .extend(i2c.i2c_device_schema(0x70))
