@@ -6,6 +6,7 @@ from esphome.const import (
     CONF_INTENSITY,
     CONF_INVERTED,
     CONF_LENGTH,
+    CONF_ID,
 )
 
 ht16k33v110_ns = cg.esphome_ns.namespace("ht16k33v110")
