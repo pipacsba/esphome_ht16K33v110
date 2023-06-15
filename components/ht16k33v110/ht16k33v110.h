@@ -4,7 +4,7 @@
 #include "esphome/core/defines.h"
 #include "esphome/core/hal.h"
 //#include "esphome/core/time.h"
-#include "esphome/components/i2c.h"
+#include "esphome/components/i2c/i2c.h"
 
 #include <vector>
 
