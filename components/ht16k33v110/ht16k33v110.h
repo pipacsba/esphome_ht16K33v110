@@ -3,10 +3,14 @@
 #include "esphome/core/component.h"
 #include "esphome/core/defines.h"
 #include "esphome/core/hal.h"
-#include "esphome/core/time.h"
+//#include "esphome/core/time.h"
 #include "esphome/components/i2c.h"
 
 #include <vector>
+
+#ifdef USE_TIME
+#include "esphome/components/time/real_time_clock.h"
+#endif
 
 namespace esphome {
 namespace ht16K33v110 {
