@@ -24,8 +24,6 @@ const uint8_t HT16K33V110_DISP_OFF = 0x80;
 // define constant for display oscillator on/off adress
 const uint8_t HT16K33V110_OSC_ON = 0x21;
 const uint8_t HT16K33V110_OSC_OFF = 0x20;
-
-
     
 const uint8_t HT16K33V110_UNKNOWN_CHAR = 0b1111111;
     
