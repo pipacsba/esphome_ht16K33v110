@@ -19,7 +19,7 @@ class HT16K33V110Display;
 
 using ht16k33v110_writer_t = std::function<void(HT16K33V110Display &)>;
 
-class HT16K33V110Display : public PollingComponent {
+class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
  public:
   void set_writer(ht16k33v110_writer_t &&writer) { this->writer_ = writer; }
 
