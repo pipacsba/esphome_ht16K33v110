@@ -36,6 +36,6 @@ async def to_code(config):
 
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
-            config[CONF_LAMBDA], [(TM1637DisplayRef, "it")], return_type=cg.void
+            config[CONF_LAMBDA], [(HT16K33V110DisplayRef, "it")], return_type=cg.void
         )
         cg.add(var.set_writer(lambda_))
