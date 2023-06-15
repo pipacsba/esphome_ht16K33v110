@@ -19,7 +19,7 @@ CONFIG_SCHEMA = (
             cv.Optional(CONF_INTENSITY, default=7): cv.All(
                 cv.uint8_t, cv.Range(min=1, max=16)
             ),
-            #cv.Optional(CONF_INVERTED, default=False): cv.boolean, # future improvement
+            cv.Optional(CONF_INVERTED, default=False): cv.boolean, # future improvement
         }
     ).extend(cv.polling_component_schema("1s"))
     .extend(i2c.i2c_device_schema(0x70))
@@ -31,7 +31,7 @@ async def to_code(config):
     await display.register_display(var, config)
 
     cg.add(var.set_intensity(config[CONF_INTENSITY]))
-    #cg.add(var.set_inverted(config[CONF_INVERTED]))
+    cg.add(var.set_inverted(config[CONF_INVERTED]))
 
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
