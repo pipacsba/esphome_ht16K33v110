@@ -13,7 +13,7 @@
 #endif
 
 namespace esphome {
-namespace ht16K33v110 {
+namespace ht16k33v110 {
 
 class HT16K33V110Display;
 
