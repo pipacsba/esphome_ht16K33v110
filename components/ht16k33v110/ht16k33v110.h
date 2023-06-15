@@ -39,8 +39,7 @@ class HT16K33V110Display : public PollingComponent {
 
   void set_intensity(uint8_t intensity) { this->intensity_ = intensity; }
   void set_inverted(bool inverted) { this->inverted_ = inverted; }
-  void set_length(uint8_t length) { this->length_ = length; }
-
+ 
   void display();
 
   /// Evaluate the strftime-format and print the result at the given position.
@@ -57,7 +56,7 @@ class HT16K33V110Display : public PollingComponent {
   void stop_();
 
   uint8_t intensity_;
-  uint8_t length_;
+  uint8_t length_ = 4;
   bool inverted_;
   bool colon_;
   optional<ht16k33v110_writer_t> writer_{};
