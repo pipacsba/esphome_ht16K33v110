@@ -176,45 +176,35 @@ void HT16K33V110Display::stop_() {
 void HT16K33V110Display::display() {
   ESP_LOGVV(TAG, "Display %02X%02X%02X%02X", buffer_[0], buffer_[1], buffer_[2], buffer_[3]);
 
-  // Write DATA CMND
-  this->start_();
-  this->send_byte_(TM1637_CMD_DATA);
-  this->stop_();
-
-  // Write ADDR CMD + first digit address
-  this->start_();
-  this->send_byte_(TM1637_CMD_ADDR);
-
-  // Write the data bytes
-  if (this->inverted_) {
-    for (int8_t i = this->length_ - 1; i >= 0; i--) {
-      this->send_byte_(this->buffer_[i]);
-    }
-  } else {
-    for (auto b : this->buffer_) {
-      this->send_byte_(b);
-    }
-  }
-
-  this->stop_();
-
-  // Write display CTRL CMND + brightness
-  this->start_();
-  this->send_byte_(TM1637_CMD_CTRL + ((this->intensity_ & 0x7) | 0x08));
-  this->stop_();
+  uint8_t segment_a = ((this->inverted_) ? this->buffer_[3] : this->buffer_[0]);
+  uint8_t segment_b = ((this->inverted_) ? this->buffer_[2] : this->buffer_[1]);
+  uint8_t segment_c = ((this->inverted_) ? this->buffer_[1] : this->buffer_[2]);
+  uint8_t segment_d = ((this->inverted_) ? this->buffer_[0] : this->buffer_[3]);
+  uint8_t colon = ((this->colon_) ? 0x02 : 0x0);
+  uint8_t dimming = 0xE0 + this->intensity_;
+  
+  this->send_byte_(HT16K33V110_CHR0_ADDRESS, segment_a);
+  this->send_byte_(HT16K33V110_CHR1_ADDRESS, segment_b);
+  this->send_byte_(HT16K33V110_CHR2_ADDRESS, segment_c);
+  this->send_byte_(HT16K33V110_CHR3_ADDRESS, segment_d);
+  this->send_byte_(HT16K33V110_COLON_ADDRESS, colon);
+  uint8_t a_value;
+  this->read_byte_(dimming, &a_value);
+    
 }
     
 bool HT16K33V110Display::send_byte_(uint8_t a_register, uint8_t value) {
-  return this->write_byte(a_register , value);
+  return this->write_byte(a_register, value);
 }
 
 uint8_t HT16K33V110Display::read_byte_(uint8_t a_register, uint8_t *value) {
-  return this->read_byte(a_register | TSL2561_COMMAND_BIT, value);
+  return this->read_byte(a_register, value);
 }
 
 uint8_t HT16K33V110Display::print(uint8_t start_pos, const char *str) {
   // ESP_LOGV(TAG, "Print at %d: %s", start_pos, str);
   uint8_t pos = start_pos;
+  bool colon = false;
   for (; *str != '\0'; str++) {
     uint8_t data = HT16K33V110_UNKNOWN_CHAR;
     if (*str >= ' ' && *str <= '~')
@@ -226,9 +216,8 @@ uint8_t HT16K33V110Display::print(uint8_t start_pos, const char *str) {
     // Remap segments, for compatibility with MAX7219 segment definition which is
     // XABCDEFG, but HT16K33V110 is // XGFEDCBA
     if (this->inverted_) {
-      // XABCDEFG > XGCBAFED
-      data = ((data & 0x80) ? 0x80 : 0) |  // no move X
-             ((data & 0x40) ? 0x8 : 0) |   // A
+      // XABCDEFG > GCBAFED
+      data = ((data & 0x40) ? 0x8 : 0) |   // A
              ((data & 0x20) ? 0x10 : 0) |  // B
              ((data & 0x10) ? 0x20 : 0) |  // C
              ((data & 0x8) ? 0x1 : 0) |    // D
@@ -236,9 +225,8 @@ uint8_t HT16K33V110Display::print(uint8_t start_pos, const char *str) {
              ((data & 0x2) ? 0x4 : 0) |    // F
              ((data & 0x1) ? 0x40 : 0);    // G
     } else {
-      // XABCDEFG > XGFEDCBA
-      data = ((data & 0x80) ? 0x80 : 0) |  // no move X
-             ((data & 0x40) ? 0x1 : 0) |   // A
+      // XABCDEFG > GFEDCBA
+      data = ((data & 0x40) ? 0x1 : 0) |   // A
              ((data & 0x20) ? 0x2 : 0) |   // B
              ((data & 0x10) ? 0x4 : 0) |   // C
              ((data & 0x8) ? 0x8 : 0) |    // D
@@ -246,10 +234,10 @@ uint8_t HT16K33V110Display::print(uint8_t start_pos, const char *str) {
              ((data & 0x2) ? 0x20 : 0) |   // F
              ((data & 0x1) ? 0x40 : 0);    // G
     }
-    if (*str == '.') {
+    if (*str == ':') {
       if (pos != start_pos)
         pos--;
-      this->buffer_[pos] |= 0b10000000;
+      colon = true;
     } else {
       if (pos >= 4) {
         ESP_LOGE(TAG, "String is too long for the display!");
@@ -259,6 +247,7 @@ uint8_t HT16K33V110Display::print(uint8_t start_pos, const char *str) {
     }
     pos++;
   }
+  this->colon_ = colon;
   return pos - start_pos;
 }
 uint8_t HT16K33V110Display::print(const char *str) { return this->print(0, str); }
