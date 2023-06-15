@@ -272,6 +272,15 @@ uint8_t HT16K33V110Display::printf(const char *format, ...) {
   return 0;
 }
 
+#ifdef USE_TIME
+uint8_t TM1637Display::strftime(uint8_t pos, const char *format, time::ESPTime time) {
+  char buffer[64];
+  size_t ret = time.strftime(buffer, sizeof(buffer), format);
+  if (ret > 0)
+    return this->print(pos, buffer);
+  return 0;
+}
+    
 uint8_t HT16K33V110Display::strftime(uint8_t pos, const char *format, ESPTime time) {
   char buffer[64];
   size_t ret = time.strftime(buffer, sizeof(buffer), format);
@@ -280,6 +289,6 @@ uint8_t HT16K33V110Display::strftime(uint8_t pos, const char *format, ESPTime ti
   return 0;
 }
 uint8_t HT16K33V110Display::strftime(const char *format, ESPTime time) { return this->strftime(0, format, time); }
-
+#endif
 }  // namespace ht16k33v110
 }  // namespace esphome
