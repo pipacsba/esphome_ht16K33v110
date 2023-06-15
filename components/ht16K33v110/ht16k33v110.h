@@ -59,6 +59,7 @@ class HT16K33V110Display : public PollingComponent {
   uint8_t intensity_;
   uint8_t length_;
   bool inverted_;
+  bool colon_;
   optional<ht16k33v110_writer_t> writer_{};
   uint8_t buffer_[6] = {0};
 };
