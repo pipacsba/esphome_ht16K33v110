@@ -10,7 +10,7 @@ from esphome.const import (
 )
 
 ht16k33v110_ns = cg.esphome_ns.namespace("ht16k33v110")
-HT16K33V110Display = ht16k33v110_ns.class_("ht16k33v110Display", cg.PollingComponent)
+HT16K33V110Display = ht16k33v110_ns.class_("HT16K33V110Display", cg.PollingComponent, i2c.I2CDevice)
 HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 
 CONFIG_SCHEMA = (
