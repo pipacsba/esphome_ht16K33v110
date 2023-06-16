@@ -28,6 +28,7 @@ def validate_intensity(config):
         raise cv.Invalid(
           f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
         )
+    print("intensity validated")
         
 def validate_intensity_map(value):
     if isinstance(value, list):
