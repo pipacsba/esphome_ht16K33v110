@@ -190,6 +190,33 @@ void HT16K33V110Display::display() {
   this->read_byte_(dimming, &a_value);
     
 }
+
+void calculate_new_intensity()
+{
+  float hysteresis = 1.03; // percentage to switch to higher intensity
+  if (this->auto_intensity_) {
+    float a_sensor_value;
+    for (sensor::Sensor *obj : App.get_sensors()) {
+      if (obj->get_name().c_str() != this->auto_intensity_source_) {
+        ESP_LOGW(TAG, "%s do not match %s", obj->get_name().c_str(), this->auto_intensity_source_);
+        continue;
+      }
+      a_sensor_value = obj->state;
+      ESP_LOGW(TAG, "Measured sensor value is %.1f.", a_sensor_value);
+    }
+    if (isnan(a_sensor_value) { a_sensor_value = 0;}
+    uint8_t a_dimming = 0;
+    uint_8_t i = 0;
+    uint8_t vecSize = this->intensity_source_values_.size();
+    for (uint8_t i = 0; i < veSize; i++)
+    {
+        if (a_sensor_value > (this->intensity_source_values_[i] * hysteresis))
+        {
+            a_dimming = this->intensity_values_[i];
+        }
+    }
+    set_intensity(a_dimming);
+}
     
 bool HT16K33V110Display::send_byte_(uint8_t a_register, uint8_t value) {
   return this->write_byte(a_register, value);
