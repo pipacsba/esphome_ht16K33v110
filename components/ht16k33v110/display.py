@@ -23,7 +23,6 @@ ht16k33v110_intensity_sensor_values = []
 ht16k33v110_intensity_values = []
 
 KT16K33V110_SCHEMA = cv.Schema(
-    display.BASIC_DISPLAY_SCHEMA.extend(
         {
             cv.GenerateID(): cv.declare_id(HT16K33V110Display),
             cv.Optional(CONF_INTENSITY, default=7): cv.All(
@@ -32,9 +31,9 @@ KT16K33V110_SCHEMA = cv.Schema(
             cv.Optional(CONF_INVERTED, default=False): cv.boolean,
             #cv.Optional(CONF_INTENSITY_MAP): cv.maybe_simple_value(INTENSITY_MAP_SCHEMA),
         }
-    ).extend(cv.polling_component_schema("1s"))
+    ).extend(display.BASIC_DISPLAY_SCHEMA)
+    .extend(cv.polling_component_schema("1s"))
     .extend(i2c.i2c_device_schema(0x70))
-)
 
 CONFIG_SCHEMA = cv.All(
     cv.ensure_list(KT16K33V110_SCHEMA),
