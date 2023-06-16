@@ -22,7 +22,7 @@ HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 ht16k33v110_intensity_sensor_values = []
 ht16k33v110_intensity_values = []
 
-KT16K33V110_SCHEMA = (
+KT16K33V110_SCHEMA = cv.Schema(
     display.BASIC_DISPLAY_SCHEMA
     .extend(
         {
