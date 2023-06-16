@@ -2,6 +2,7 @@
 #include "esphome/core/log.h"
 #include "esphome/core/helpers.h"
 #include "esphome/core/hal.h"
+#include "esphome/components/sensor/sensor.h"
 
 namespace esphome {
 namespace ht16k33v110 {
