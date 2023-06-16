@@ -214,7 +214,7 @@ void HT16K33V110Display::calculate_new_intensity()
         continue;
       }
       a_sensor_value = obj->state;
-      ESP_LOGW(TAG, "Measured sensor value is %.1f.", a_sensor_value);
+      ESP_LOGVV(TAG, "Measured sensor value is %.1f.", a_sensor_value);
     }
     if (isnan(a_sensor_value)) { a_sensor_value = 0;}
     uint8_t a_dimming = 0;
