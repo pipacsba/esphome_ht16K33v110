@@ -80,6 +80,10 @@ async def to_code(config):
 
     cg.add(var.set_intensity(config[CONF_INTENSITY]))
     cg.add(var.set_inverted(config[CONF_INVERTED]))
+    if CONF_INTENSITY_MAP in config:
+        cg.add(var.set_intensity_map(config[CONF_INTENSITY_MAP][CONF_MAP]))
+        cg.add(var.set_intensity_auto())
+        cg.add(var.set_intensity_sensor_id(config[CONF_INTENSITY_MAP][CONF_SOURCE_ID]))
 
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
