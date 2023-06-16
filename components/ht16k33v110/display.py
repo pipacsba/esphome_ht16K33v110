@@ -44,11 +44,11 @@ def validate_intensity_map(config):
     else:
        raise cv.Invalid(" Intensity map parameter must be of form 3000 -> 2")
     return (cv.Schema(
-        {
+          {
             cv.Required(CONF_SENSOR_VALUES): cv.ensure_list,
             cv.Required(CONF_INTENSITY_VALUES): cv.ensure_list,
-        })(value))
-    )
+          }
+        )(value)
         
 INTENSITY_MAP_SCHEMA = cv.Schema(
     {
