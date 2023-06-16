@@ -22,34 +22,6 @@ HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 ht16k33v110_intensity_sensor_values = []
 ht16k33v110_intensity_values = []
 
-def validate_intensity_map(value):
-    if isinstance(value, list):
-        raise cv.Invalid("It's a list, hurray!")
-        value = cv.string(value)
-        parts = value.split("->")
-        if len(parts) != 2:
-            raise cv.Invalid(" Intensity map parameter must be of form 3000 -> 2")
-        sensor_value = cv.float(parts[0].strip())
-        intensity_value = cv.float(parts[0].strip())
-        ht16k33v110_intensity_sensor_values.append(sensor_value)
-        ht16k33v110_intensity_values.append(intensity_value)
-    else:
-       raise cv.Invalid(" Intensity map parameter must a list")
-    return value
-
-def validate_intensity(config):
-    if (CONF_INTENSITY_MAP in config and CONF_INTENSITY in config):
-        raise cv.Invalid(
-          f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
-        )
-        
-INTENSITY_MAP_SCHEMA = cv.Schema(
-    {
-        cv.Required(CONF_SOURCE_ID): cv.use_id(sensor.Sensor),
-        #cv.Required(CONF_MAP): validate_intensity_map,
-    }
-)
-
 KT16K33V110_SCHEMA = cv.Schema(
     display.BASIC_DISPLAY_SCHEMA.extend(
         {
@@ -66,7 +38,6 @@ KT16K33V110_SCHEMA = cv.Schema(
 
 CONFIG_SCHEMA = cv.All(
     cv.maybe_simple_value(KT16K33V110_SCHEMA),
-    validate_intensity,
 )
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
