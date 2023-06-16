@@ -29,6 +29,13 @@ def validate_intensity(config):
         )
     return config
 
+INTENSITY_MAP_SCHEMA = cv.Schema(
+    {
+        cv.Required(CONF_SOURCE_ID): cv.use_id(sensor.Sensor),
+        #cv.Required(CONF_MAP): validate_intensity_map,
+    }
+)
+
 KT16K33V110_SCHEMA = cv.Schema(
     display.BASIC_DISPLAY_SCHEMA
     .extend(
@@ -38,7 +45,7 @@ KT16K33V110_SCHEMA = cv.Schema(
                 cv.uint8_t, cv.Range(min=1, max=16)
             ),
             cv.Optional(CONF_INVERTED, default=False): cv.boolean,
-            #cv.Optional(CONF_INTENSITY_MAP): cv.maybe_simple_value(INTENSITY_MAP_SCHEMA),
+            cv.Optional(CONF_INTENSITY_MAP): cv.maybe_simple_value(INTENSITY_MAP_SCHEMA),
         }
     )
     .extend(i2c.i2c_device_schema(0x70))
