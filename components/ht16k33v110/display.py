@@ -37,7 +37,7 @@ INTENSITY_MAP_SCHEMA = cv.Schema(
 )
         
 CONFIG_SCHEMA = (
-    validate_intensity,
+    #validate_intensity,
     display.BASIC_DISPLAY_SCHEMA.extend(
         {
             cv.GenerateID(): cv.declare_id(HT16K33V110Display),
