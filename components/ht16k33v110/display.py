@@ -42,7 +42,6 @@ def validate_intensity(config):
         raise cv.Invalid(
           f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
         )
-    print("intensity validated")
         
 INTENSITY_MAP_SCHEMA = cv.Schema(
     {
@@ -66,7 +65,7 @@ KT16K33V110_SCHEMA = cv.Schema(
 )
 
 CONFIG_SCHEMA = cv.All(
-    cv.ensure_list(KT16K33V110_SCHEMA),
+    cv.maybe_simple_value(KT16K33V110_SCHEMA),
     validate_intensity,
 )
 async def to_code(config):
