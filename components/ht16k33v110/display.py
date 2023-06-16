@@ -37,7 +37,7 @@ KT16K33V110_SCHEMA = cv.Schema(
 )
 
 CONFIG_SCHEMA = cv.All(
-    cv.maybe_simple_value(KT16K33V110_SCHEMA),
+    cv.ensure_list(KT16K33V110_SCHEMA),
 )
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
