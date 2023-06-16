@@ -70,12 +70,12 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
   uint8_t intensity_;
   uint8_t length_ = 4;
   bool inverted_;
-  bool auto_intensity_ = false;
   bool colon_;
   optional<ht16k33v110_writer_t> writer_{};
   uint8_t buffer_[6] = {0};
 
-  const char* auto_intensity_source;
+  bool auto_intensity_ = false;
+  const char* auto_intensity_source_;
   std::vector<float> intensity_source_values_;
   std::vector<float> intensity_values_;
 };
