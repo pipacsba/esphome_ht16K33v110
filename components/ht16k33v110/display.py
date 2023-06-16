@@ -12,15 +12,12 @@ from esphome.const import (
 CONF_INTENSITY_MAP = "intensity_map"
 CONF_SOURCE_ID = "source_id"
 CONF_MAP = "map"
-CONF_INTENSITY_VALUES = "intensity_values"
-CONF_SENSOR_VALUES = "sensor_values"
+CONF_INTENSITY_VALUE = "intensity_values"
+CONF_SENSOR_VALUE = "sensor_values"
 
 ht16k33v110_ns = cg.esphome_ns.namespace("ht16k33v110")
 HT16K33V110Display = ht16k33v110_ns.class_("HT16K33V110Display", cg.PollingComponent, i2c.I2CDevice)
 HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
-
-ht16k33v110_intensity_sensor_values = []
-ht16k33v110_intensity_values = []
 
 def validate_intensity(config):
     if (CONF_INTENSITY_MAP in config and CONF_INTENSITY in config):
@@ -33,8 +30,8 @@ def validate_map(value):
     if isinstance(value, dict):
         return cv.Schema(
             {
-                cv.Required(CONF_INTENSITY_VALUES): cv.float_,
-                cv.Required(CONF_SENSOR_VALUES): cv.float_,
+                cv.Required(CONF_INTENSITY_VALUE): cv.float_,
+                cv.Required(CONF_SENSOR_VALUE): cv.float_,
             }
         )(value)
 
@@ -43,13 +40,11 @@ def validate_map(value):
     if len(parts) != 2:
         raise cv.Invalid("Calibration parameter must be of form 3000 -> 23°C")
     sensor_value = float(parts[0].strip())
-    ht16k33v110_intensity_sensor_values.append(sensor_value)
     intensity = float(parts[1].strip())
-    ht16k33v110_intensity_values.append(intensity)
     return validate_map(
         {
-            CONF_INTENSITY_VALUES: intensity,
-            CONF_SENSOR_VALUES: sensor_value,
+            CONF_INTENSITY_VALUE: intensity,
+            CONF_SENSOR_VALUE: sensor_value,
         }
     )
 
