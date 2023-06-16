@@ -48,6 +48,7 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
   void set_intensity_sensor_id(const char* auto_intensity_source) {this->auto_intensity_source_ = auto_intensity_source;}
   void set_intensity_source_values(std::vector<float> intensity_source_values) {this->intensity_source_values_ = intensity_source_values;}
   void set_intensity_values(std::vector<float> intensity_values) {this->intensity_values_ = intensity_values;}
+  void calculate_new_intensity();
  
   void display();
 
