@@ -209,11 +209,11 @@ void HT16K33V110Display::calculate_new_intensity()
       a_sensor_value = obj->state;
       ESP_LOGW(TAG, "Measured sensor value is %.1f.", a_sensor_value);
     }
-    if (isnan(a_sensor_value) { a_sensor_value = 0;}
+    if (isnan(a_sensor_value)) { a_sensor_value = 0;}
     uint8_t a_dimming = 0;
-    uint_8_t i = 0;
+    uint8_t i = 0;
     uint8_t vecSize = this->intensity_source_values_.size();
-    for (uint8_t i = 0; i < veSize; i++)
+    for (uint8_t i = 0; i < vecSize; i++)
     {
         if (a_sensor_value > (this->intensity_source_values_[i] * hysteresis))
         {
