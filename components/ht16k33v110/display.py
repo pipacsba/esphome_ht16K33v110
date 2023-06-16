@@ -63,7 +63,7 @@ KT16K33V110_SCHEMA = cv.Schema(
             cv.Optional(CONF_INTENSITY_MAP): cv.Schema(
                 {
                     cv.Optional(CONF_SOURCE_ID): cv.use_id(sensor.Sensor),
-                    cv.optional(CONF_MAP): cv.ensure_list(validate_map),
+                    cv.Optional(CONF_MAP): cv.ensure_list(validate_map),
                 }
             ),
         }
