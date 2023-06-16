@@ -22,7 +22,7 @@ HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 ht16k33v110_intensity_sensor_values = []
 ht16k33v110_intensity_values = []
 
-CONFIG_SCHEMA = (
+KT16K33V110_SCHEMA = (
     display.BASIC_DISPLAY_SCHEMA
     .extend(
         {
@@ -40,9 +40,11 @@ CONFIG_SCHEMA = (
 #
 #
 
-#CONFIG_SCHEMA = cv.All(
-#    cv.ensure_list(KT16K33V110_SCHEMA),
-#)
+CONFIG_SCHEMA = cv.All(
+    cv.ensure_list(KT16K33V110_SCHEMA),
+)
+
+
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
