@@ -41,12 +41,7 @@ def validate_intensity_map(value):
         ht16k33v110_intensity_values.append(intensity_value)
     else:
        raise cv.Invalid(" Intensity map parameter must be of form 3000 -> 2")
-    return cv.Schema(
-          {
-            cv.Required(CONF_SENSOR_VALUES): cv.ensure_list,
-            cv.Required(CONF_INTENSITY_VALUES): cv.ensure_list,
-          }
-        )(value)
+    return (value)
         
     
     
