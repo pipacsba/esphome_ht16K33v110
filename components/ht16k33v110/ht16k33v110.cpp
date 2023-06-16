@@ -4,6 +4,7 @@
 #include "esphome/core/hal.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/component.h"
+#include "esphome/core/application.h"
 
 namespace esphome {
 namespace ht16k33v110 {
