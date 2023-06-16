@@ -29,6 +29,28 @@ def validate_intensity(config):
         )
     return config
 
+def validate_map(value):
+    if isinstance(value, dict):
+        return cv.Schema(
+            {
+                cv.Required(CONF_INTENSITY_VALUES): cv.float_,
+                cv.Required(CONF_SENSOR_VALUES): cv.float_,
+            }
+        )(value)
+
+    value = cv.string(value)
+    parts = value.split("->")
+    if len(parts) != 2:
+        raise cv.Invalid("Calibration parameter must be of form 3000 -> 23°C")
+    sensor_value = float(parts[0].strip())
+    intensity = float(parts[1].strip())
+    return validate_map(
+        {
+            CONF_INTENSITY_VALUES: intensity,
+            CONF_SENSOR_VALUES: sensor_value,
+        }
+    )
+
 KT16K33V110_SCHEMA = cv.Schema(
     display.BASIC_DISPLAY_SCHEMA
     .extend(
@@ -41,6 +63,7 @@ KT16K33V110_SCHEMA = cv.Schema(
             cv.Optional(CONF_INTENSITY_MAP): cv.Schema(
                 {
                     cv.Optional(CONF_SOURCE_ID): cv.use_id(sensor.Sensor),
+                    cv.optional(CONF_MAP): cv.ensure_list(validate_map),
                 }
             ),
         }
