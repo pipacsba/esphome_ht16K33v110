@@ -31,8 +31,9 @@ KT16K33V110_SCHEMA = display.BASIC_DISPLAY_SCHEMA.extend(
             cv.Optional(CONF_INVERTED, default=False): cv.boolean,
             #cv.Optional(CONF_INTENSITY_MAP): cv.maybe_simple_value(INTENSITY_MAP_SCHEMA),
         }
-    ).extend(cv.polling_component_schema("1s"))
-#.extend(i2c.i2c_device_schema(0x70))
+    ).extend(i2c.i2c_device_schema(0x70))
+#.extend(cv.polling_component_schema("1s"))
+#
 
 CONFIG_SCHEMA = cv.All(
     cv.ensure_list(KT16K33V110_SCHEMA),
