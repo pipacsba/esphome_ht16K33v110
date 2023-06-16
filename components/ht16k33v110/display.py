@@ -45,7 +45,7 @@ KT16K33V110_SCHEMA = cv.Schema(
     .extend(cv.polling_component_schema("1s"))
 )
 
-CONFIG_SCHEMA = cv.All(KT16K33V110_SCHEMA, validate_intensity)
+CONFIG_SCHEMA = cv.All(validate_intensity, KT16K33V110_SCHEMA)
 
 
 async def to_code(config):
