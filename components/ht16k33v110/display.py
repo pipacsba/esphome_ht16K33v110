@@ -22,7 +22,6 @@ HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 ht16k33v110_intensity_sensor_values = []
 ht16k33v110_intensity_values = []
 
-
 def validate_intensity(config):
     if (CONF_INTENSITY_MAP in config and CONF_INTENSITY in config):
         raise cv.Invalid(
@@ -48,7 +47,7 @@ def validate_intensity_map(value):
 INTENSITY_MAP_SCHEMA = cv.Schema(
     {
         cv.Required(CONF_SOURCE_ID): cv.use_id(sensor.Sensor),
-        cv.Required(CONF_MAP): validate_intensity_map,
+        #cv.Required(CONF_MAP): validate_intensity_map,
     }
 )
         
