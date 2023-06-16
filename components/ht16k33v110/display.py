@@ -47,7 +47,7 @@ def validate_intensity_map(config):
         {
             cv.Required(CONF_SENSOR_VALUES): cv.ensure_list,
             cv.Required(CONF_INTENSITY_VALUES): cv.ensure_list,
-        }(value))
+        })(value))
     )
         
 INTENSITY_MAP_SCHEMA = cv.Schema(
