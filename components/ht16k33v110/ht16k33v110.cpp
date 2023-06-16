@@ -198,8 +198,8 @@ void HT16K33V110Display::display() {
 
 void HT16K33V110Display::calculate_new_intensity()
 {
-  float hysteresis = 1.03; // percentage to switch to higher intensity
   if (this->auto_intensity_) {
+    float hysteresis = 1.03; // percentage to switch to higher intensity
     float a_sensor_value;
     for (sensor::Sensor *obj : App.get_sensors()) {
       if (obj->get_name().c_str() != this->auto_intensity_source_) {
@@ -221,6 +221,7 @@ void HT16K33V110Display::calculate_new_intensity()
         }
     }
     set_intensity(a_dimming);
+  }
 }
     
 bool HT16K33V110Display::send_byte_(uint8_t a_register, uint8_t value) {
