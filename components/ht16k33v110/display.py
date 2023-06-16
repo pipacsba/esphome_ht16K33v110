@@ -31,6 +31,7 @@ def validate_intensity(config):
         
 def validate_intensity_map(value):
     if isinstance(value, list):
+        raise cv.Invalid("It's a list, hurray!")
         value = cv.string(value)
         parts = value.split("->")
         if len(parts) != 2:
@@ -40,10 +41,8 @@ def validate_intensity_map(value):
         ht16k33v110_intensity_sensor_values.append(sensor_value)
         ht16k33v110_intensity_values.append(intensity_value)
     else:
-       raise cv.Invalid(" Intensity map parameter must be of form 3000 -> 2")
-    return (value)
-        
-    
+       raise cv.Invalid(" Intensity map parameter must a list")
+    return value
     
 INTENSITY_MAP_SCHEMA = cv.Schema(
     {
