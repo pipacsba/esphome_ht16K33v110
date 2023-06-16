@@ -194,7 +194,7 @@ void HT16K33V110Display::display() {
     
 }
 
-void calculate_new_intensity()
+void HT16K33V110Display::calculate_new_intensity()
 {
   float hysteresis = 1.03; // percentage to switch to higher intensity
   if (this->auto_intensity_) {
