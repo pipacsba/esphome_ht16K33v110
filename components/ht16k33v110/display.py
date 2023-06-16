@@ -40,9 +40,7 @@ KT16K33V110_SCHEMA = cv.Schema(
 #
 #
 
-CONFIG_SCHEMA = cv.All(
-    cv.ensure_list(KT16K33V110_SCHEMA),
-)
+CONFIG_SCHEMA = cv.All(KT16K33V110_SCHEMA)
 
 
 async def to_code(config):
