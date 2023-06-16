@@ -27,6 +27,7 @@ def validate_intensity(config):
         raise cv.Invalid(
           f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
         )
+    return config
 
 KT16K33V110_SCHEMA = cv.Schema(
     display.BASIC_DISPLAY_SCHEMA
