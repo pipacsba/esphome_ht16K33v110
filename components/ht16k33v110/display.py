@@ -22,6 +22,12 @@ HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 ht16k33v110_intensity_sensor_values = []
 ht16k33v110_intensity_values = []
 
+def validate_intensity(config):
+    if (CONF_INTENSITY_MAP in config and CONF_INTENSITY in config):
+        raise cv.Invalid(
+          f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
+        )
+
 KT16K33V110_SCHEMA = cv.Schema(
     display.BASIC_DISPLAY_SCHEMA
     .extend(
@@ -37,10 +43,8 @@ KT16K33V110_SCHEMA = cv.Schema(
     .extend(i2c.i2c_device_schema(0x70))
     .extend(cv.polling_component_schema("1s"))
 )
-#
-#
 
-CONFIG_SCHEMA = cv.All(KT16K33V110_SCHEMA)
+CONFIG_SCHEMA = cv.All(KT16K33V110_SCHEMA, validate_intensity)
 
 
 async def to_code(config):
