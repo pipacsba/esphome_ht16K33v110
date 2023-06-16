@@ -149,7 +149,15 @@ void HT16K33V110Display::setup() {
 
 void HT16K33V110Display::dump_config() {
   ESP_LOGCONFIG(TAG, "TM1637:");
-  ESP_LOGCONFIG(TAG, "  Intensity: %d", this->intensity_);
+  if (this->auto_intensity_) 
+  {
+      ESP_LOGCONFIG(TAG, "  Intensity is auto adjusted based on %s", this->auto_intensity_source_);
+      ESP_LOGCONFIG(TAG, "  Intensity is auto adjusted with %d steps", this->intensity_source_values_.size());
+  }
+  else
+  {
+    ESP_LOGCONFIG(TAG, "  Intensity: %d", this->intensity_);
+  }
   ESP_LOGCONFIG(TAG, "  Inverted: %d", this->inverted_);
   ESP_LOGCONFIG(TAG, "  Length: %d", this->length_);
   LOG_UPDATE_INTERVAL(this);
