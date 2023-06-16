@@ -9,9 +9,19 @@ from esphome.const import (
     CONF_ID,
 )
 
+CONF_INTENSITY_MAP = "intensity_map"
+CONF_SOURCE_ID = "source_id"
+CONF_MAP = "map"
+
 ht16k33v110_ns = cg.esphome_ns.namespace("ht16k33v110")
 HT16K33V110Display = ht16k33v110_ns.class_("HT16K33V110Display", cg.PollingComponent, i2c.I2CDevice)
 HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
+
+def validate_intensity(config):
+    if (CONF_INTENSITY_MAP in config and CONF_INTENSITY in config):
+        raise cv.Invalid(
+          f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
+        )
 
 CONFIG_SCHEMA = (
     display.BASIC_DISPLAY_SCHEMA.extend(
