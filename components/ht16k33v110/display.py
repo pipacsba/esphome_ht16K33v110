@@ -43,7 +43,9 @@ def validate_map(value):
     if len(parts) != 2:
         raise cv.Invalid("Calibration parameter must be of form 3000 -> 23°C")
     sensor_value = float(parts[0].strip())
+    ht16k33v110_intensity_sensor_values.append(sensor_value)
     intensity = float(parts[1].strip())
+    ht16k33v110_intensity_values.append(intensity)
     return validate_map(
         {
             CONF_INTENSITY_VALUES: intensity,
