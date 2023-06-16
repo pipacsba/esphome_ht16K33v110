@@ -29,7 +29,7 @@ def validate_intensity(config):
           f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
         )
         
-def validate_intensity_map(config):
+def validate_intensity_map(value):
     if isinstance(value, list):
         value = cv.string(value)
         parts = value.split("->")
@@ -43,11 +43,19 @@ def validate_intensity_map(config):
                    CONF_INTENSITY_VALUES: ht16k33v110_intensity_values}
     else:
        raise cv.Invalid(" Intensity map parameter must be of form 3000 -> 2")
+    return cv.Schema(
+          {
+            cv.Required(CONF_SENSOR_VALUES): cv.ensure_list,
+            cv.Required(CONF_INTENSITY_VALUES): cv.ensure_list,
+          }
+        )(value)
         
+    
+    
 INTENSITY_MAP_SCHEMA = cv.Schema(
     {
         cv.Required(CONF_SOURCE_ID): cv.use_id(sensor.Sensor),
-        cv.Required(CONF_MAP): validate_intensity_map,
+        cv.Required(CONF_MAP): validate_intensity_map(value),
     }
 )
         
