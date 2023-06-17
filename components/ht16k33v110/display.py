@@ -87,7 +87,7 @@ async def to_code(config):
         intensity_values = []
         for a_value in config[CONF_INTENSITY_MAP][CONF_MAP]:
             intensity_source_values.append(a_value[CONF_SENSOR_VALUE])
-            intensity_values.append(a_value[CONF_SENSOR_VALUE])
+            intensity_values.append(a_value[CONF_INTENSITY_VALUE])
         cg.add(var.set_intensity_source_values(intensity_source_values))
         cg.add(var.set_intensity_values(intensity_values))
         cg.add(var.set_intensity_auto())
