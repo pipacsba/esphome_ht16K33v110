@@ -3,6 +3,7 @@
 #include "esphome/core/helpers.h"
 #include "esphome/core/hal.h"
 #include "esphome/components/sensor/sensor.h"
+#include "esphome/components/number/number.h"
 #include "esphome/core/component.h"
 #include "esphome/core/application.h"
 
@@ -152,7 +153,6 @@ void HT16K33V110Display::dump_config() {
   if (this->auto_intensity_) 
   {
       ESP_LOGCONFIG(TAG, "  Intensity is auto adjusted based on %s", this->auto_intensity_source_);
-      ESP_LOGCONFIG(TAG, "  Intensity is auto adjusted with %d steps", this->intensity_source_values_.size());
       ESP_LOGCONFIG(TAG, "  Current intensity: %d", this->intensity_);
   }
   else
@@ -208,29 +208,17 @@ void HT16K33V110Display::display() {
 void HT16K33V110Display::calculate_new_intensity()
 {
   if (this->auto_intensity_) {
-    float hysteresis = 1.03; // percentage to switch to higher intensity
-    float a_sensor_value = 0;
-    for (sensor::Sensor *obj : App.get_sensors()) {
+    int a_sensor_value = 0;
+    for (number::Number *obj : App.get_sensors()) {
       if (obj->get_name().c_str() != this->auto_intensity_source_) {
-        ESP_LOGD(TAG, "Sensor do not match %s", obj->get_name().c_str() );
+        ESP_LOGD(TAG, "Number do not match %s", obj->get_name().c_str() );
         continue;
       }
       a_sensor_value = obj->state;
-      ESP_LOGD(TAG, "Measured sensor value is %.1f.", a_sensor_value);
+      ESP_LOGD(TAG, "Measured number value is %d", a_sensor_value);
     }
     if (isnan(a_sensor_value)) { a_sensor_value = 0;}
-    uint8_t a_dimming = 0;
-    uint8_t i = 0;
-    uint8_t vecSize = this->intensity_source_values_.size();
-    for (uint8_t i = 0; i < vecSize; i++)
-    {
-        if (a_sensor_value > (this->intensity_source_values_[i] * hysteresis))
-        {
-            a_dimming = this->intensity_values_[i];
-        }
-    }
-    ESP_LOGD(TAG, "Related dimming is %u", a_dimming);
-    set_intensity(a_dimming);
+    set_intensity(a_sensor_value);
   }
 }
     
