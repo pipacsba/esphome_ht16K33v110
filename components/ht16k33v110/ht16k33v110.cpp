@@ -212,11 +212,11 @@ void HT16K33V110Display::calculate_new_intensity()
     float a_sensor_value = 0;
     for (sensor::Sensor *obj : App.get_sensors()) {
       if (obj->get_name().c_str() != this->auto_intensity_source_) {
-        ESP_LOGD(TAG, "RSensor do not match %s", obj->get_name().c_str() );
+        ESP_LOGD(TAG, "Sensor do not match %s", obj->get_name().c_str() );
         continue;
       }
       a_sensor_value = obj->state;
-      ESP_LOGW(TAG, "Measured sensor value is %.1f.", a_sensor_value);
+      ESP_LOGD(TAG, "Measured sensor value is %.1f.", a_sensor_value);
     }
     if (isnan(a_sensor_value)) { a_sensor_value = 0;}
     uint8_t a_dimming = 0;
@@ -229,7 +229,7 @@ void HT16K33V110Display::calculate_new_intensity()
             a_dimming = this->intensity_values_[i];
         }
     }
-    ESP_LOGW(TAG, "Related dimming is %u", a_dimming);
+    ESP_LOGD(TAG, "Related dimming is %u", a_dimming);
     set_intensity(a_dimming);
   }
 }
