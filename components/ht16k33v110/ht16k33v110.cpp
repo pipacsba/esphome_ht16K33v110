@@ -209,10 +209,11 @@ void HT16K33V110Display::calculate_new_intensity()
 {
   if (this->auto_intensity_) {
     float hysteresis = 1.03; // percentage to switch to higher intensity
-    float a_sensor_value;
+    float a_sensor_value = 0;
     for (sensor::Sensor *obj : App.get_sensors()) {
       if (obj->get_name().c_str() != this->auto_intensity_source_) {
         continue;
+        ESP_LOGW(TAG, "RSensor do not match %s", obj->get_name().c_str() );
       }
       a_sensor_value = obj->state;
       ESP_LOGW(TAG, "Measured sensor value is %.1f.", a_sensor_value);
