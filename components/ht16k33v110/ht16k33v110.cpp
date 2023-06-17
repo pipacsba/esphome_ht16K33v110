@@ -192,6 +192,7 @@ void HT16K33V110Display::display() {
   uint8_t segment_d = ((this->inverted_) ? this->buffer_[0] : this->buffer_[3]);
   uint8_t colon = ((this->colon_) ? 0x02 : 0x0);
   uint8_t dimming = 0xE0 + this->intensity_;
+  ESP_LOGW(TAG, "Current intensity %u", this->intensity_);
   
   this->send_byte_(HT16K33V110_CHR0_ADDRESS, segment_a);
   this->send_byte_(HT16K33V110_CHR1_ADDRESS, segment_b);
