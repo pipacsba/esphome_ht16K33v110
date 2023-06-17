@@ -9,7 +9,7 @@ from esphome.const import (
     CONF_ID,
 )
 
-CONF_INTENSITY_SOURCE_ID = "source_id"
+CONF_INTENSITY_SOURCE_ID = "intensity_source_id"
 
 ht16k33v110_ns = cg.esphome_ns.namespace("ht16k33v110")
 HT16K33V110Display = ht16k33v110_ns.class_("HT16K33V110Display", cg.PollingComponent, i2c.I2CDevice)
