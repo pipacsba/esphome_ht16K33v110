@@ -192,8 +192,7 @@ void HT16K33V110Display::display() {
   uint8_t segment_d = ((this->inverted_) ? this->buffer_[0] : this->buffer_[3]);
   uint8_t colon = ((this->colon_) ? 0x02 : 0x0);
   uint8_t dimming = 0xE0 + this->intensity_;
-  ESP_LOGW(TAG, "Current intensity %u", this->intensity_);
-  
+    
   this->send_byte_(HT16K33V110_CHR0_ADDRESS, segment_a);
   this->send_byte_(HT16K33V110_CHR1_ADDRESS, segment_b);
   this->send_byte_(HT16K33V110_CHR2_ADDRESS, segment_c);
@@ -216,7 +215,7 @@ void HT16K33V110Display::calculate_new_intensity()
         continue;
       }
       a_sensor_value = obj->state;
-      ESP_LOGVV(TAG, "Measured sensor value is %.1f.", a_sensor_value);
+      ESP_LOGW(TAG, "Measured sensor value is %.1f.", a_sensor_value);
     }
     if (isnan(a_sensor_value)) { a_sensor_value = 0;}
     uint8_t a_dimming = 0;
@@ -229,6 +228,7 @@ void HT16K33V110Display::calculate_new_intensity()
             a_dimming = this->intensity_values_[i];
         }
     }
+    ESP_LOGW(TAG, "Related dimming is %u", a_dimming);
     set_intensity(a_dimming);
   }
 }
