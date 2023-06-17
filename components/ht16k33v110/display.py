@@ -51,7 +51,7 @@ async def to_code(config):
     cg.add(var.set_inverted(config[CONF_INVERTED]))
     if CONF_INTENSITY_SOURCE_ID in config:
         cg.add(var.set_intensity_auto())
-        cg.add(var.set_intensity_number_id(config[CONF_INTENSITY_MAP][CONF_SOURCE_ID]))
+        cg.add(var.set_intensity_number_id(config[CONF_INTENSITY_SOURCE_ID]))
 
     if CONF_LAMBDA in config:
         lambda_ = await cg.process_lambda(
