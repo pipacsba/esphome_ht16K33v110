@@ -209,7 +209,7 @@ void HT16K33V110Display::calculate_new_intensity()
 {
   if (this->auto_intensity_) {
     int a_sensor_value = 0;
-    for (number::Number *obj : App.get_sensors()) {
+    for (number::Number *obj : App.get_numbers()) {
       if (obj->get_name().c_str() != this->auto_intensity_source_) {
         ESP_LOGD(TAG, "Number do not match %s", obj->get_name().c_str() );
         continue;
