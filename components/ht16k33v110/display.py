@@ -9,11 +9,7 @@ from esphome.const import (
     CONF_ID,
 )
 
-CONF_INTENSITY_MAP = "intensity_map"
-CONF_SOURCE_ID = "source_id"
-CONF_MAP = "map"
-CONF_INTENSITY_VALUE = "intensity_values"
-CONF_SENSOR_VALUE = "sensor_values"
+CONF_INTENSITY_SOURCE_ID = "source_id"
 
 ht16k33v110_ns = cg.esphome_ns.namespace("ht16k33v110")
 HT16K33V110Display = ht16k33v110_ns.class_("HT16K33V110Display", cg.PollingComponent, i2c.I2CDevice)
@@ -22,31 +18,9 @@ HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 def validate_intensity(config):
     if (CONF_INTENSITY_MAP in config and CONF_INTENSITY in config):
         raise cv.Invalid(
-          f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_MAP}"
+          f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_SOURCE_ID}"
         )
     return config
-
-def validate_map(value):
-    if isinstance(value, dict):
-        return cv.Schema(
-            {
-                cv.Required(CONF_INTENSITY_VALUE): cv.float_,
-                cv.Required(CONF_SENSOR_VALUE): cv.float_,
-            }
-        )(value)
-
-    value = cv.string(value)
-    parts = value.split("->")
-    if len(parts) != 2:
-        raise cv.Invalid("Calibration parameter must be of form 3000 -> 23°C")
-    sensor_value = float(parts[0].strip())
-    intensity = float(parts[1].strip())
-    return validate_map(
-        {
-            CONF_INTENSITY_VALUE: intensity,
-            CONF_SENSOR_VALUE: sensor_value,
-        }
-    )
 
 KT16K33V110_SCHEMA = cv.Schema(
     display.BASIC_DISPLAY_SCHEMA
@@ -57,13 +31,7 @@ KT16K33V110_SCHEMA = cv.Schema(
                 cv.uint8_t, cv.Range(min=1, max=16)
             ),
             cv.Optional(CONF_INVERTED, default=False): cv.boolean,
-            cv.Optional(CONF_INTENSITY_MAP): cv.Schema(
-                {
-                    #cv.Required(CONF_SOURCE_ID): cv.use_id(sensor.Sensor),
-                    cv.Required(CONF_SOURCE_ID): cv.string,
-                    cv.Required(CONF_MAP): cv.ensure_list(validate_map),
-                }
-            ),
+            cv.Optional(CONF_INTENSITY_SOURCE_ID): cv.string,
         }
     )
     .extend(i2c.i2c_device_schema(0x70))
@@ -81,15 +49,7 @@ async def to_code(config):
 
     cg.add(var.set_intensity(config[CONF_INTENSITY]))
     cg.add(var.set_inverted(config[CONF_INVERTED]))
-    if CONF_INTENSITY_MAP in config:
-        #cg.add(var.set_intensity_map(config[CONF_INTENSITY_MAP][CONF_MAP]))
-        intensity_source_values = []
-        intensity_values = []
-        for a_value in config[CONF_INTENSITY_MAP][CONF_MAP]:
-            intensity_source_values.append(a_value[CONF_SENSOR_VALUE])
-            intensity_values.append(a_value[CONF_INTENSITY_VALUE])
-        cg.add(var.set_intensity_source_values(intensity_source_values))
-        cg.add(var.set_intensity_values(intensity_values))
+    if CONF_INTENSITY_SOURCE_ID in config:
         cg.add(var.set_intensity_auto())
         cg.add(var.set_intensity_sensor_id(config[CONF_INTENSITY_MAP][CONF_SOURCE_ID]))
 
