@@ -212,7 +212,7 @@ void HT16K33V110Display::calculate_new_intensity()
     float a_sensor_value = 0;
     for (sensor::Sensor *obj : App.get_sensors()) {
       if (obj->get_name().c_str() != this->auto_intensity_source_) {
-        ESP_LOGW(TAG, "RSensor do not match %s", obj->get_name().c_str() );
+        ESP_LOGD(TAG, "RSensor do not match %s", obj->get_name().c_str() );
         continue;
       }
       a_sensor_value = obj->state;
