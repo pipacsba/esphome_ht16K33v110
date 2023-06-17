@@ -150,6 +150,7 @@ void HT16K33V110Display::setup() {
 
 void HT16K33V110Display::dump_config() {
   ESP_LOGCONFIG(TAG, "HT16K33V110:");
+  LOG_I2C_DEVICE(this);
   if (this->auto_intensity_) 
   {
       ESP_LOGCONFIG(TAG, "  Intensity is auto adjusted based on %s", this->auto_intensity_source_);
