@@ -16,7 +16,7 @@ HT16K33V110Display = ht16k33v110_ns.class_("HT16K33V110Display", cg.PollingCompo
 HT16K33V110DisplayRef = HT16K33V110Display.operator("ref")
 
 def validate_intensity(config):
-    if (CONF_INTENSITY_MAP in config and CONF_INTENSITY in config):
+    if (CONF_INTENSITY_SOURCE_ID in config and CONF_INTENSITY in config):
         raise cv.Invalid(
           f"Do not specify {CONF_INTENSITY} when using {CONF_INTENSITY_SOURCE_ID}"
         )
