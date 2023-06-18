@@ -201,9 +201,10 @@ void HT16K33V110Display::display() {
   this->send_byte_(HT16K33V110_COLON_ADDRESS, colon);
   uint8_t a_value;
   this->read_byte_(dimming, &a_value);
-
-  calculate_new_intensity();
-    
+  if (this->colon_)
+  {
+      calculate_new_intensity();
+  }
 }
 
 void HT16K33V110Display::calculate_new_intensity()
