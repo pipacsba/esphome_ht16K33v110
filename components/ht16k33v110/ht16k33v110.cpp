@@ -219,7 +219,7 @@ void HT16K33V110Display::calculate_new_intensity()
       ESP_LOGD(TAG, "Measured number value is %d", a_sensor_value);
     }
     if (isnan(a_sensor_value)) { a_sensor_value = 0;}
-    set_intensity(a_sensor_value);
+    set_intensity((uint8_t) a_sensor_value);
   }
 }
     
