@@ -47,6 +47,7 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
 
   void set_intensity_auto() { this->auto_intensity_ = true;}
   void set_intensity_number_id(const char* auto_intensity_source) {this->auto_intensity_source_ = auto_intensity_source;}
+  void configure_valve_switch(number::Number *intensity_number);
   void calculate_new_intensity();
  
   void display();
@@ -74,7 +75,8 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
   uint8_t buffer_[6] = {0};
 
   bool auto_intensity_ = false;
-  const char* auto_intensity_source_;
+  //const char* auto_intensity_source_;
+  number::Number *auto_intensity_source_{nullptr};   // used for both latching and non-latching valves
 };
 
 }  // namespace tm1637
