@@ -43,7 +43,7 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
   /// Print `str` at position 0.
   uint8_t print(const char *str);
 
-  void set_intensity(uint8_t intensity) { this->intensity_ = intensity; }
+  void set_intensity(uint8_t intensity) { this->intensity_ = intensity; this->next_update_ = true; }
   void set_inverted(bool inverted) { this->inverted_ = inverted; }
 
   void set_intensity_auto() { this->auto_intensity_ = true;}
@@ -60,6 +60,11 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
 #endif
 
  protected:
+  void intensity_callback_(float state) {
+    this->next_update_ = true;
+    this->temperature_ = (uint8_t) state;
+  }
+
   void bit_delay_();
   void setup_pins_();
   bool send_byte_(uint8_t a_register, uint8_t value);
@@ -67,14 +72,15 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
   void start_();
   void stop_();
 
-  uint8_t intensity_;
+  uint8_t intensity_{0};
   uint8_t length_ = 4;
   bool inverted_;
   bool colon_;
   optional<ht16k33v110_writer_t> writer_{};
   uint8_t buffer_[6] = {0};
 
-  bool auto_intensity_ = false;
+  bool next_update_{false}
+  bool auto_intensity_{false};
   //const char* auto_intensity_source_;
   number::Number *auto_intensity_source_{nullptr};   // used for both latching and non-latching valves
 };
