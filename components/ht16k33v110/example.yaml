@@ -52,7 +52,7 @@ display:
         it.strftime("%H:%M", id(homeassistant_time).now());
       else
         it.strftime("%H%M", id(homeassistant_time).now());
-    intensity_source_id: "Display Intensity"
+    intensity_source_id: display_intensity
 
 number:
   - platform: template
