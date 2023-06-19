@@ -209,7 +209,7 @@ void HT16K33V110Display::display() {
 
 void HT16K33V110Display::calculate_new_intensity()
 {
-  uint8_t a_sensor_value;
+  uint8_t a_sensor_value = 0;
   if (this->auto_intensity_) {
     //uint8_t a_sensor_value = 0;
     //for (number::Number *obj : App.get_numbers()) {
@@ -219,7 +219,7 @@ void HT16K33V110Display::calculate_new_intensity()
     //  }
       a_sensor_value = (uint8_t) this->auto_intensity_source_->state;
       ESP_LOGD(TAG, "Measured number value is %d", a_sensor_value);
-    }
+    //}
     if (isnan(a_sensor_value)) { a_sensor_value = 0;}
     set_intensity( a_sensor_value);
   }
