@@ -47,8 +47,7 @@ class HT16K33V110Display : public PollingComponent, public i2c::I2CDevice {
   void set_inverted(bool inverted) { this->inverted_ = inverted; }
 
   void set_intensity_auto() { this->auto_intensity_ = true;}
-  void set_intensity_number_id(const char* auto_intensity_source) {this->auto_intensity_source_ = auto_intensity_source;}
-  void configure_valve_switch(number::Number *intensity_number);
+  void set_intensity_number_id(number::Number *auto_intensity_source) {this->auto_intensity_source_ = auto_intensity_source;}
   void calculate_new_intensity();
  
   void display();
