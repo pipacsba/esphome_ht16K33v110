@@ -146,6 +146,10 @@ void HT16K33V110Display::setup() {
   this->read_byte_(HT16K33V110_OSC_ON, &data);
   this->read_byte_(HT16K33V110_DISP_ON, &data);
   this->display();
+
+  this->auto_intensity_source_->add_on_state_callback([this](float state) { this->calculate_new_intensity(); });
+  if (this->auto_intensity_source_->has_state()) { this->calculate_new_intensity(); }
+  ESP_LOGD(TAG, "  Added callback for intensity source '%s'", this->auto_intensity_source_->get_name().c_str());  
 }
 
 void HT16K33V110Display::dump_config() {
@@ -192,7 +196,11 @@ void HT16K33V110Display::display() {
   uint8_t segment_c = ((this->inverted_) ? this->buffer_[1] : this->buffer_[2]);
   uint8_t segment_d = ((this->inverted_) ? this->buffer_[0] : this->buffer_[3]);
   uint8_t colon = ((this->colon_) ? 0x02 : 0x0);
-  uint8_t dimming = 0xE0 + this->intensity_;
+  if (this->next_update_)
+  {
+     uint8_t dimming = 0xE0 + this->intensity_;
+     this->next_update_ = false;
+  }
     
   this->send_byte_(HT16K33V110_CHR0_ADDRESS, segment_a);
   this->send_byte_(HT16K33V110_CHR1_ADDRESS, segment_b);
@@ -201,10 +209,10 @@ void HT16K33V110Display::display() {
   this->send_byte_(HT16K33V110_COLON_ADDRESS, colon);
   uint8_t a_value;
   this->read_byte_(dimming, &a_value);
-  if (this->colon_)
-  {
-      calculate_new_intensity();
-  }
+  //if (this->colon_)
+  //{
+  //    calculate_new_intensity();
+  //}
 }
 
 void HT16K33V110Display::calculate_new_intensity()
@@ -221,6 +229,7 @@ void HT16K33V110Display::calculate_new_intensity()
       ESP_LOGD(TAG, "Measured number value is %d", a_sensor_value);
     //}
     if (isnan(a_sensor_value)) { a_sensor_value = 0;}
+    
     set_intensity( a_sensor_value);
   }
 }
