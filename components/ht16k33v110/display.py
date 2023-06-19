@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import display, i2c, sensor
+from esphome.components import display, i2c, sensor, number
 from esphome.const import (
     CONF_LAMBDA,
     CONF_INTENSITY,
