@@ -196,19 +196,25 @@ void HT16K33V110Display::display() {
   uint8_t segment_c = ((this->inverted_) ? this->buffer_[1] : this->buffer_[2]);
   uint8_t segment_d = ((this->inverted_) ? this->buffer_[0] : this->buffer_[3]);
   uint8_t colon = ((this->colon_) ? 0x02 : 0x0);
-  if (this->next_update_)
-  {
-     uint8_t dimming = 0xE0 + this->intensity_;
-     this->next_update_ = false;
-  }
-    
+      
   this->send_byte_(HT16K33V110_CHR0_ADDRESS, segment_a);
   this->send_byte_(HT16K33V110_CHR1_ADDRESS, segment_b);
   this->send_byte_(HT16K33V110_CHR2_ADDRESS, segment_c);
   this->send_byte_(HT16K33V110_CHR3_ADDRESS, segment_d);
   this->send_byte_(HT16K33V110_COLON_ADDRESS, colon);
-  uint8_t a_value;
-  this->read_byte_(dimming, &a_value);
+
+  //set intensity
+  if (this->next_update_)
+  {
+     uint8_t dimming = 0xE0 + this->intensity_;
+     uint8_t a_value;
+     this->read_byte_(dimming, &a_value);
+     this->next_update_ = false;
+     ESP_LOGD(TAG, "Dimming is updated");
+  }
+  
+    
+  
   //if (this->colon_)
   //{
   //    calculate_new_intensity();
