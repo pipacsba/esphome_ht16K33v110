@@ -31,7 +31,7 @@ KT16K33V110_SCHEMA = cv.Schema(
                 cv.uint8_t, cv.Range(min=1, max=16)
             ),
             cv.Optional(CONF_INVERTED, default=False): cv.boolean,
-            cv.Optional(CONF_INTENSITY_SOURCE_ID): cv.string,
+            cv.Optional(CONF_INTENSITY_SOURCE_ID): cv.use_id(number.Number),
         }
     )
     .extend(i2c.i2c_device_schema(0x70))
