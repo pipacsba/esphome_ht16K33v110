@@ -43,7 +43,8 @@ CONFIG_SCHEMA = cv.All(validate_intensity, HT16K33V110_SCHEMA)
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
-    await cg.register_component(var, config)
+    # not needed line after ESPHome 2023.12.0 (?)
+    #await cg.register_component(var, config) 
     await display.register_display(var, config)
     await i2c.register_i2c_device(var, config)
 
