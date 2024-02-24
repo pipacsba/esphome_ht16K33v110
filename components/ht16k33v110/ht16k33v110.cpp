@@ -7,6 +7,10 @@
 #include "esphome/core/component.h"
 #include "esphome/core/application.h"
 
+#ifndef isnan
+using std::isnan;
+#endif
+
 namespace esphome {
 namespace ht16k33v110 {
 
