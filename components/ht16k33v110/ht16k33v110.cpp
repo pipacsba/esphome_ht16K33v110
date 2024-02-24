@@ -161,7 +161,7 @@ void HT16K33V110Display::dump_config() {
   LOG_I2C_DEVICE(this);
   if (this->auto_intensity_) 
   {
-      ESP_LOGCONFIG(TAG, "  Intensity is auto adjusted based on %s", this->auto_intensity_source_);
+      ESP_LOGCONFIG(TAG, "  Intensity is auto adjusted based on %s", this->auto_intensity_source_->get_name().c_str());
       ESP_LOGCONFIG(TAG, "  Current intensity: %d", this->intensity_);
   }
   else
